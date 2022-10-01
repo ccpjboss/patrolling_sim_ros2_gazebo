@@ -1,0 +1,19 @@
+*~
+bin
+build
+lib
+results/*
+params/amcl/*_initial_pose.xml
+lastConfigUsed
+maps/*/robots.inc
+rostime.txt
+simrun.txt
+experiments.txt
+.vscode/*
+src/patrolling_sim_ros2.code-workspace
+
+launch_ros1/
+
+setinitposes copy.py
+
+start_experiment copy.py
