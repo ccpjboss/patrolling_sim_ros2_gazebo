@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(patrolling_sim_ros2)
+project(patrolling_sim_ros2_gazebo)
 
 # Add support for C++14
 if(NOT CMAKE_CXX_STANDARD)

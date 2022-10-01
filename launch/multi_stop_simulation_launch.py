@@ -34,7 +34,8 @@ from launch.actions import OpaqueFunction
 import configparser
 
 initPoses = {}
-package_path = get_package_share_directory('patrolling_sim_ros2')
+package_path = get_package_share_directory('patrolling_sim_ros2_gazebo')
+
 
 def loadInitPoses():
     try:
@@ -44,6 +45,7 @@ def loadInitPoses():
             initPoses[option] = ConfigIP.get("InitialPoses", option)
     except:
         print("Could not load initial poses file")
+
 
 def launch_setup(context, *args, **kwargs):
     # Get the launch directory
@@ -58,14 +60,14 @@ def launch_setup(context, *args, **kwargs):
 
     scenario = map_name_str+'_'+n_robots_str
     iposes = initPoses[scenario.lower()]
-    iposes = iposes.replace('[','')
-    iposes = iposes.replace(']','')
+    iposes = iposes.replace('[', '')
+    iposes = iposes.replace(']', '')
     iposes = iposes.split(',')
 
     robots = []
     for i in range(n_robots):
         robots.append({'name': ('robot'+str(i)), 'x_pose': iposes[i*2], 'y_pose': iposes[i*2+1],
-        'z_pose': 0.01, 'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0})
+                       'z_pose': 0.01, 'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0})
     print(robots)
 
     # Simulation settings
@@ -81,7 +83,7 @@ def launch_setup(context, *args, **kwargs):
     log_settings = LaunchConfiguration('log_settings', default='false')
 
     # Declare the launch arguments
-    world_str = package_path +'/worlds/' + map_name_str + '.world'
+    world_str = package_path + '/worlds/' + map_name_str + '.world'
 
     declare_simulator_cmd = DeclareLaunchArgument(
         'simulator',
@@ -90,20 +92,20 @@ def launch_setup(context, *args, **kwargs):
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(package_path, 'maps','1r5', '1r5.yaml'),
+        default_value=os.path.join(package_path, 'maps', '1r5', '1r5.yaml'),
         description='Full path to map file to load')
 
     declare_robot3_params_file_cmd = DeclareLaunchArgument(
         'robot2_params_file',
-        default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_2.yaml'),
+        default_value=os.path.join(
+            package_path, 'params', 'nav2_multirobot_params_2.yaml'),
         description='Full path to the ROS2 parameters file to use for robot3 launched nodes')
-
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config',
-        default_value=os.path.join(package_path, 'rviz', 'nav2_namespaced_view.rviz'),
+        default_value=os.path.join(
+            package_path, 'rviz', 'nav2_namespaced_view.rviz'),
         description='Full path to the RVIZ config file to use.')
-
 
     # Start Gazebo with plugin providing the robot spawning service
     start_gazebo_cmd = ExecuteProcess(
@@ -119,12 +121,12 @@ def launch_setup(context, *args, **kwargs):
         group = GroupAction([
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                        os.path.join(launch_dir, 'rviz_launch.py')),
+                    os.path.join(launch_dir, 'rviz_launch.py')),
                 condition=IfCondition(use_rviz),
                 launch_arguments={
-                                  'namespace': TextSubstitution(text=robot['name']),
-                                  'use_namespace': 'True',
-                                  'rviz_config': rviz_config_file}.items()),
+                    'namespace': TextSubstitution(text=robot['name']),
+                    'use_namespace': 'True',
+                    'rviz_config': rviz_config_file}.items()),
 
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(os.path.join(package_path,
@@ -179,23 +181,37 @@ def launch_setup(context, *args, **kwargs):
 
     return nav_instances_cmds
 
+
 def generate_launch_description():
     return LaunchDescription([
-        DeclareLaunchArgument('use_robot_state_pub',default_value='True',description='Whether to start the robot state publisher'),
-        DeclareLaunchArgument('autostart', default_value='True',description='Automatically startup the stacks'),
-        DeclareLaunchArgument('robot7_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_7.yaml'),description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
-        DeclareLaunchArgument('robot6_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_6.yaml'),description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
-        DeclareLaunchArgument('robot5_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_5.yaml'),description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
-        DeclareLaunchArgument('robot4_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_4.yaml'),description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
-        DeclareLaunchArgument('robot3_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_3.yaml'),description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
-        DeclareLaunchArgument('robot2_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_2.yaml'),description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
-        DeclareLaunchArgument('robot1_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_1.yaml'),description='Full path to the ROS2 parameters file to use for robot2 launched nodes'),
-        DeclareLaunchArgument('robot0_params_file',default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_0.yaml'),description='Full path to the ROS2 parameters file to use for robot1 launched nodes'),
-        DeclareLaunchArgument('use_rviz',default_value='True',description='Whether to start RVIZ'),
-        DeclareLaunchArgument('rviz_config',default_value=os.path.join(package_path, 'rviz', 'nav2_namespaced_view.rviz'),description='Full path to the RVIZ config file to use.'),
+        DeclareLaunchArgument('use_robot_state_pub', default_value='True',
+                              description='Whether to start the robot state publisher'),
+        DeclareLaunchArgument('autostart', default_value='True',
+                              description='Automatically startup the stacks'),
+        DeclareLaunchArgument('robot7_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_7.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
+        DeclareLaunchArgument('robot6_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_6.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
+        DeclareLaunchArgument('robot5_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_5.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
+        DeclareLaunchArgument('robot4_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_4.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
+        DeclareLaunchArgument('robot3_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_3.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
+        DeclareLaunchArgument('robot2_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_2.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot3 launched nodes'),
+        DeclareLaunchArgument('robot1_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_1.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot2 launched nodes'),
+        DeclareLaunchArgument('robot0_params_file', default_value=os.path.join(package_path, 'params', 'nav2_multirobot_params_0.yaml'),
+                              description='Full path to the ROS2 parameters file to use for robot1 launched nodes'),
+        DeclareLaunchArgument('use_rviz', default_value='True',
+                              description='Whether to start RVIZ'),
+        DeclareLaunchArgument('rviz_config', default_value=os.path.join(
+            package_path, 'rviz', 'nav2_namespaced_view.rviz'), description='Full path to the RVIZ config file to use.'),
         DeclareLaunchArgument('map_path'),
         DeclareLaunchArgument('n_robots'),
         OpaqueFunction(function=launch_setup)
     ])
+
 
 generate_launch_description()

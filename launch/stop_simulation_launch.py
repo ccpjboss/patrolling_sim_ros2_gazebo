@@ -28,7 +28,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     # Get the launch directory
-    bringup_dir = get_package_share_directory('patrolling_sim_ros2')
+    bringup_dir = get_package_share_directory('patrolling_sim_ros2_gazebo')
     launch_dir = os.path.join(bringup_dir, 'launch')
 
     # Create the launch configuration variables
@@ -85,7 +85,7 @@ def generate_launch_description():
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
         default_value=os.path.join(
-            bringup_dir, 'maps','ctcv', 'ctcv.yaml'),
+            bringup_dir, 'maps', 'ctcv', 'ctcv.yaml'),
         description='Full path to map file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -177,7 +177,7 @@ def generate_launch_description():
         arguments=[
             '-entity', robot_name,
             '-timeout', TextSubstitution(text=str(20)),
-            '-spawn_service_timeout',TextSubstitution(text=str(20)),
+            '-spawn_service_timeout', TextSubstitution(text=str(20)),
             '-robot_namespace', namespace,
             '-file', urdf,
             '-x', pose['x'], '-y', pose['y'], '-z', pose['z'],

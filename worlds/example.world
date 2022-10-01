@@ -30,7 +30,7 @@
           <geometry>
             <mesh>
               <!--<uri>file://../meshes/ctcv.STL</uri>-->              <!-- relative path wouldn't work on roslaunch (kinetic), just standalone gazebo (v7) -->
-              <uri>model://patrolling_sim_ros2/meshes/example.dae</uri>              <!-- this required a change on the exports in "package.xml" -->
+              <uri>model://patrolling_sim_ros2_gazebo/meshes/example.dae</uri>              <!-- this required a change on the exports in "package.xml" -->
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -49,7 +49,7 @@
           <geometry>
             <mesh>-->
               <!--<uri>file://../meshes/ctcv.STL</uri>-->              <!-- relative path wouldn't work on roslaunch (kinetic), just standalone gazebo (v7) -->
-              <uri>model://patrolling_sim_ros2/meshes/example.dae</uri>-->              <!-- this required a change on the exports in "package.xml" -->
+              <uri>model://patrolling_sim_ros2_gazebo/meshes/example.dae</uri>-->              <!-- this required a change on the exports in "package.xml" -->
               <scale>1 1 1</scale>
             </mesh>
           </geometry>

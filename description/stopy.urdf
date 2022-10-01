@@ -9,7 +9,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
 
       <geometry>
-        <mesh filename="package://patrolling_sim_ros2/meshes/stopy_decimated.stl" />
+        <mesh filename="package://patrolling_sim_ros2_gazebo/meshes/stopy_decimated.stl" />
         <!--stopy.stl-->
       </geometry>
 
@@ -21,7 +21,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://patrolling_sim_ros2/meshes/stopy_chull.stl" />
+        <mesh filename="package://patrolling_sim_ros2_gazebo/meshes/stopy_chull.stl" />
       </geometry>
     </collision>
 
