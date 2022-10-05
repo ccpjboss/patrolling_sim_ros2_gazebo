@@ -1,4 +1,8 @@
-**THIS REPO IS UNDER HEAVY DEVELOPMENT. IT IS NOT IN A USABLE STATE**
+# Patrolling Sim for ROS 2 - Gazebo version
+
+To run the simulation: `./start_experiment_gazebo`
+
+## Past versions
 
 =================================
 patrolling_sim v2.2.4 (Jan. 2022)
